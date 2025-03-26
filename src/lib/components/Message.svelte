@@ -63,11 +63,9 @@
 			{/each}
 		</div>
 	{/if}
-	{#if toCompare.length === 2}
-		<Modal isOpen onClose={() => (toCompare = [])}>
-			<DiffView oldText={sortedTexts.oldText} newText={sortedTexts.newText} />
-		</Modal>
-	{/if}
+	<Modal isOpen={toCompare.length === 2} onClose={() => (toCompare = [])}>
+		<DiffView oldText={sortedTexts.oldText} newText={sortedTexts.newText} />
+	</Modal>
 </div>
 
 <style>
@@ -108,7 +106,7 @@
 				padding-inline: 0.3em;
 				font-size: 0.7rem;
 			}
-
+			
 			.message-text {
 				text-align: left;
 				padding-right: .8em;

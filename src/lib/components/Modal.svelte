@@ -19,37 +19,40 @@
 		}
 	});
 
-	const onEscPress = (_: any) => {
-		$effect(() => {
-			const ac = new AbortController();
-			window.addEventListener(
-				'keydown',
-				(ev) => {
-					if (ev.key === 'Escape') {
-						onClose();
-					}
-				},
-				{ signal: ac.signal }
-			);
-			return () => {
-				ac.abort();
-			};
-		});
-	};
+	// Properly implement the action function for escape key handling
+	function onEscPress(node: HTMLElement) {
+		const handleKeydown = (event: KeyboardEvent) => {
+			if (event.key === 'Escape') {
+				onClose();
+			}
+		};
+		
+		window.addEventListener('keydown', handleKeydown);
+		
+		return {
+			destroy() {
+				window.removeEventListener('keydown', handleKeydown);
+			}
+		};
+	}
 </script>
 
 {#if isOpen}
-	<div use:onEscPress class="modal-container">
+	<div use:onEscPress class="modal-container" in:fade={{ duration: 200 }} out:fade={{ duration: 150 }}>
 		<div
 			role="dialog"
 			tabindex="0"
-			onkeydown={onclose}
+			onkeydown={onClose}
 			aria-modal="true"
 			onclick={onClose}
 			class="modal-overlay"
+			transition:fade={{ duration: 300 }}
 		></div>
 
-		<div class="modal-content">
+		<div 
+			transition:fly={{ y: 30, duration: 300 }} 
+			class="modal-content"
+		>
 			{@render children()}
 		</div>
 	</div>
