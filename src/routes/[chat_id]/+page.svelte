@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Message from '$lib/components/Message.svelte';
+	import Text from '$lib/components/Text.svelte';
 
 	const { data } = $props();
 	const messages = $derived(data.chat?.messages || []);
@@ -7,7 +8,7 @@
 
 <div class="chat-view">
 	<div class="chat-header">
-		<h2>{data.chat?.name}</h2>
+		<Text variant="h2" weight="semibold" color="primary">{data.chat?.name}</Text>
 	</div>
 	<div class="messages-container">
 		{#each messages as message (message.id)}

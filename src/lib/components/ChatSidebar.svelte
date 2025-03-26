@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Chat } from '$lib/types';
+	import Text from './Text.svelte';
 
 	type Props = {
 		chats: Chat[];
@@ -10,36 +11,62 @@
 </script>
 
 <div class="chat-list">
-	{#each chats as chat}
-		<a
-			class="chat-item"
-			type="button"
-			tabindex="0"
-			data-selected={selectedChat === chat.id}
-			href="/{chat.id}"
-		>
-			<div class="avatar">
-				<div class="avatar-placeholder">{chat.name.charAt(0)}</div>
-			</div>
-			<div class="chat-content">
-				<div class="chat-header">
-					<span class="chat-name">{chat.name}</span>
+	{#if chats.length === 0}
+		<div class="no-chats">
+			<div class="no-chats-icon">📭</div>
+			<Text variant="h5" align="center">No chats available</Text>
+			<Text variant="caption" color="muted" align="center">There are no chats to display at the moment</Text>
+		</div>
+	{:else}
+		{#each chats as chat}
+			<a
+				class="chat-item"
+				type="button"
+				tabindex="0"
+				data-selected={selectedChat === chat.id}
+				href="/{chat.id}"
+			>
+				<div class="avatar">
+					<div class="avatar-placeholder">{chat.name.charAt(0)}</div>
 				</div>
-				<div class="chat-preview"></div>
-			</div>
-		</a>
-	{/each}
+				<div class="chat-content">
+					<div class="chat-header">
+						<Text variant="body" weight="medium" truncate={true} class="chat-name">{chat.name}</Text>
+					</div>
+					<div class="chat-preview"></div>
+				</div>
+			</a>
+		{/each}
+	{/if}
 </div>
 
 <style>
 	.chat-list {
 		width: 100%;
 		max-width: 400px;
-		font-family:
-			-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 		height: 100vh;
 		overflow-y: auto;
 		border-right: 1px solid #f0f0f0;
+	}
+
+	.no-chats {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		height: 100%;
+		padding: 20px;
+		text-align: center;
+		color: #666;
+	}
+
+	.no-chats-icon {
+		font-size: 48px;
+		margin-bottom: 16px;
+	}
+
+	.no-chats :global(.text) {
+		margin: 5px 0;
 	}
 
 	a.chat-item {
@@ -100,11 +127,7 @@
 	}
 
 	.chat-name {
-		font-weight: 500;
-		font-size: 16px;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
+		max-width: 100%;
 	}
 
 	.chat-preview {

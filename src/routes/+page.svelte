@@ -1,9 +1,10 @@
 <script lang="ts">
+	import Text from '$lib/components/Text.svelte';
 </script>
 
 <div class="placeholder">
 	<div class="emoji">👋</div>
-	<p>Welcome to Telegram Watch</p>
+	<Text variant="h3" color="primary" align="center">Welcome to Telegram Watch</Text>
 </div>
 
 <style>
@@ -13,7 +14,6 @@
 		align-items: center;
 		justify-content: center;
 		height: 100%;
-		color: #999;
 	}
 
 	.emoji {

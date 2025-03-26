@@ -4,6 +4,7 @@
 	import _ from 'lodash';
 	import DiffView from './DiffView.svelte';
 	import Modal from './Modal.svelte';
+	import Text from './Text.svelte';
 	type Props = {
 		message: TMessage;
 	};
@@ -35,11 +36,11 @@
 	<button onclick={toggleHistory} class="message-preview">
 		<span class="message-text">
 			{#if lastAction?.type === 'deleted'}
-				<span class="deleted-text">Message deleted</span>
+				<Text variant="body" italic={true} color="muted">Message deleted</Text>
 			{:else if !lastAction?.payload}
-				<span class="empty-text">No content</span>
+				<Text variant="body" italic={true} color="muted">No content</Text>
 			{:else}
-				{lastAction?.payload}
+				<Text variant="body">{lastAction?.payload}</Text>
 			{/if}
 		</span>
 		<div class="history-count">{message.history.length}</div>
@@ -49,7 +50,7 @@
 			{#each message.history.slice().reverse() as action, i}
 				<div class="history-item {action.type}">
 					<div class="history-header">
-						<div class="history-type">{action.type}</div>
+						<Text variant="small" color="secondary" class="history-type">{action.type}</Text>
 						<button
 							class={{ 'diff-button': true, 'to-compare': toCompare.includes(action.id) }}
 							onclick={() => toggleToCompare(action.id)}
@@ -57,10 +58,10 @@
 							Compare
 						</button>
 					</div>
-					<div class="history-content">{action.payload || 'No content'}</div>
-					<div class="history-date">
+					<Text variant="body">{action.payload || 'No content'}</Text>
+					<Text variant="small" color="muted" class="history-date">
 						{new Date(action.date).toLocaleString()}
-					</div>
+					</Text>
 				</div>
 			{/each}
 		</div>
@@ -114,18 +115,6 @@
 				padding-right: .8em;
 			}
 
-			.deleted-text,
-			.empty-text {
-				font-style: italic;
-			}
-
-			.deleted-text {
-				color: #999;
-			}
-
-			.empty-text {
-				color: #aaa;
-			}
 		}
 
 		.message-history {
@@ -150,20 +139,10 @@
 				}
 
 				.history-type {
-					font-size: 12px;
-					color: #666;
 					text-transform: capitalize;
 				}
 
-				.history-content {
-					font-size: 14px;
-					line-height: 1.3;
-					color: #444;
-				}
-
 				.history-date {
-					font-size: 11px;
-					color: #999;
 					margin-top: 4px;
 				}
 
