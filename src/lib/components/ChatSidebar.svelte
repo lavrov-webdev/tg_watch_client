@@ -126,10 +126,6 @@
 		margin-bottom: 5px;
 	}
 
-	.chat-name {
-		max-width: 100%;
-	}
-
 	.chat-preview {
 		display: flex;
 		justify-content: space-between;

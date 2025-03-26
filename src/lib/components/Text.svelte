@@ -1,4 +1,6 @@
 <script lang="ts">
+	import type { Snippet } from "svelte";
+
 	type TextVariant = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'body' | 'caption' | 'small';
 	type TextAlign = 'left' | 'center' | 'right';
 	type TextWeight = 'normal' | 'medium' | 'semibold' | 'bold';
@@ -12,6 +14,7 @@
 		italic?: boolean;
 		truncate?: boolean;
 		class?: string;
+		children: Snippet
 	};
 
 	const {
@@ -21,7 +24,8 @@
 		color = 'default',
 		italic = false,
 		truncate = false,
-		class: className = ''
+		class: className = '',
+		children
 	}: Props = $props();
 
 	// Map variants to HTML elements
@@ -53,7 +57,7 @@
 </script>
 
 <svelte:element this={element} class={classes}>
-	<slot />
+	{@render children()}
 </svelte:element>
 
 <style>

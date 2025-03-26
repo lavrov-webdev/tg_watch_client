@@ -138,14 +138,6 @@
 					margin-bottom: 4px;
 				}
 
-				.history-type {
-					text-transform: capitalize;
-				}
-
-				.history-date {
-					margin-top: 4px;
-				}
-
 				.diff-button {
 					font-size: 0.75rem;
 					padding: 3px 8px;
