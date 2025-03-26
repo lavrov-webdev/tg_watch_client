@@ -48,17 +48,19 @@
 		<div transition:slide class="message-history">
 			{#each message.history.slice().reverse() as action, i}
 				<div class="history-item {action.type}">
-					<div class="history-type">{action.type}</div>
+					<div class="history-header">
+						<div class="history-type">{action.type}</div>
+						<button
+							class={{ 'diff-button': true, 'to-compare': toCompare.includes(action.id) }}
+							onclick={() => toggleToCompare(action.id)}
+						>
+							Compare
+						</button>
+					</div>
 					<div class="history-content">{action.payload || 'No content'}</div>
 					<div class="history-date">
 						{new Date(action.date).toLocaleString()}
 					</div>
-					<button
-						class={{ 'diff-button': true, 'to-compare': toCompare.includes(action.id) }}
-						onclick={() => toggleToCompare(action.id)}
-					>
-						Compare
-					</button>
 				</div>
 			{/each}
 		</div>
@@ -140,11 +142,17 @@
 					border-bottom: none;
 				}
 
+				.history-header {
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+					margin-bottom: 4px;
+				}
+
 				.history-type {
 					font-size: 12px;
 					color: #666;
 					text-transform: capitalize;
-					margin-bottom: 4px;
 				}
 
 				.history-content {
@@ -160,11 +168,22 @@
 				}
 
 				.diff-button {
-					font-size: 0.7rem;
+					font-size: 0.75rem;
+					padding: 3px 8px;
+					background-color: #f0f0f0;
+					border: 1px solid #ddd;
+					border-radius: 4px;
 					transition: all 0.2s;
+					cursor: pointer;
+					
+					&:hover {
+						background-color: #e0e0e0;
+					}
 
 					&.to-compare {
-						color: green;
+						background-color: #e6f7e6;
+						border-color: #c3e6c3;
+						color: #2e7d32;
 					}
 				}
 			}
