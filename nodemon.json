@@ -1,6 +1,6 @@
 {
-  "watch": ["mock-api.ts", "example.txt"],
-  "ext": "ts,txt,json",
+  "watch": ["mock-api.ts"],
+  "ext": "ts,json",
   "ignore": ["node_modules", ".git"],
   "exec": "esno mock-api.ts"
 }
