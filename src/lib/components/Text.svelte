@@ -28,7 +28,6 @@
 		children
 	}: Props = $props();
 
-	// Map variants to HTML elements
 	const elementMap: Record<TextVariant, string> = {
 		h1: 'h1',
 		h2: 'h2',
@@ -43,7 +42,6 @@
 
 	const element = elementMap[variant];
 
-	// Compute classes based on props
 	const classes = [
 		'text',
 		`text-${variant}`,
