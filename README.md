@@ -57,7 +57,6 @@ docker-compose logs -f
 
 4. Access the application:
    - SvelteKit app: http://your-server-ip:3000
-   - Mock API: http://your-server-ip:3001/chats
 
 ### Configuration
 
