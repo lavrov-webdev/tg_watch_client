@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import { fade, fly } from 'svelte/transition';
-	import { onMount } from 'svelte';
 	type Props = {
 		isOpen: boolean;
 		onClose: () => void;
@@ -10,99 +9,12 @@
 
 	const { children, isOpen, onClose }: Props = $props();
 	
-	let modalContent: HTMLElement;
 	let previouslyFocusedElement: HTMLElement | null = null;
-	let focusableElements: HTMLElement[] = [];
-
-	function getFocusableElements(element: HTMLElement): HTMLElement[] {
-		return Array.from(
-			element.querySelectorAll(
-				'a[href], button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])'
-			)
-		) as HTMLElement[];
-	}
-
-	function focusTrap(node: HTMLElement) {
-		const updateFocusableElements = () => {
-			focusableElements = getFocusableElements(node);
-			console.log('Focusable elements updated:', focusableElements.length);
-		};
-
-		const handleKeydown = (event: KeyboardEvent) => {
-			if (!isOpen) return;
-			
-			if (event.key === 'Tab') {
-				updateFocusableElements();
-				
-				if (focusableElements.length === 0) return;
-
-				const firstFocusableElement = focusableElements[0];
-				const lastFocusableElement = focusableElements[focusableElements.length - 1];
-
-				const isActiveElementInModal = node.contains(document.activeElement);
-				
-				if (!isActiveElementInModal) {
-					event.preventDefault();
-					firstFocusableElement.focus();
-					return;
-				}
-
-				if (event.shiftKey && document.activeElement === firstFocusableElement) {
-					event.preventDefault();
-					lastFocusableElement.focus();
-				} 
-				else if (!event.shiftKey && document.activeElement === lastFocusableElement) {
-					event.preventDefault();
-					firstFocusableElement.focus();
-				}
-			}
-		};
-
-		setTimeout(updateFocusableElements, 0);
-		
-		document.addEventListener('keydown', handleKeydown, true);
-
-		const observer = new MutationObserver(() => {
-			setTimeout(updateFocusableElements, 0);
-		});
-		
-		observer.observe(node, { 
-			childList: true, 
-			subtree: true,
-			attributes: true,
-			attributeFilter: ['tabindex', 'disabled']
-		});
-
-		return {
-			destroy() {
-				document.removeEventListener('keydown', handleKeydown, true);
-				observer.disconnect();
-			},
-			update() {
-				setTimeout(updateFocusableElements, 0);
-			}
-		};
-	}
-
-	function setInitialFocus() {
-		if (!modalContent) return;
-		
-		focusableElements = getFocusableElements(modalContent);
-		console.log('Setting initial focus, elements:', focusableElements.length);
-		
-		if (focusableElements.length > 0) {
-			focusableElements[0].focus();
-		} else {
-			modalContent.focus();
-		}
-	}
 
 	$effect(() => {
 		if (isOpen) {
 			document.body.style.overflow = 'hidden';
 			previouslyFocusedElement = document.activeElement as HTMLElement;
-			
-			setTimeout(setInitialFocus, 100);
 		} else {
 			document.body.style.overflow = '';
 			if (previouslyFocusedElement) {
@@ -143,14 +55,10 @@
 		></div>
 
 		<div 
-			bind:this={modalContent}
-			use:focusTrap
 			transition:fly={{ y: 30, duration: 300 }} 
 			class="modal-content"
 			role="dialog"
 			aria-modal="true"
-			tabindex="0"
-			onclick={(e) => e.stopPropagation()}
 		>
 			{@render children()}
 		</div>
