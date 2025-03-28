@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { diff_match_patch } from 'diff-match-patch';
-	import Text from './Text.svelte';
+	import Text from '../ui/Text.svelte';
 	const dmp = new diff_match_patch();
 
 	type Props = {

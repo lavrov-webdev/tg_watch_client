@@ -4,9 +4,9 @@
 	import { marked } from 'marked';
 	import sanitizeHtml from 'sanitize-html';
 	import { slide } from 'svelte/transition';
-	import DiffView from './DiffView.svelte';
-	import Modal from './Modal.svelte';
-	import Text from './Text.svelte';
+import DiffView from './DiffView.svelte';
+import Modal from '../ui/Modal.svelte';
+import Text from '../ui/Text.svelte';
 	import dayjs from 'dayjs';
 	import { DATE_FORMAT } from '$lib/consts';
 	type Props = {

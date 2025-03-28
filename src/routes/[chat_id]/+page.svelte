@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Message from '$lib/components/Message.svelte';
-	import Text from '$lib/components/Text.svelte';
+import Message from '$lib/components/messages/Message.svelte';
+import Text from '$lib/components/ui/Text.svelte';
 
 	const { data } = $props();
 	const messages = $derived(data.chat?.messages || []);

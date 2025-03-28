@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ChatSidebar from '$lib/components/ChatSidebar.svelte';
+	import ChatSidebar from '$lib/components/chat/ChatSidebar.svelte';
 	const { data, children } = $props();
 </script>
 

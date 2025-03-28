@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Chat } from '$lib/types';
-	import Text from './Text.svelte';
+	import Text from '../ui/Text.svelte';
 
 	type Props = {
 		chats: Chat[];
