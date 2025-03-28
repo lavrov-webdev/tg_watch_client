@@ -5,7 +5,16 @@ export const load = async ({ params }) => {
     try {
         const response = await apiClient.get<ChatDetails>(`/chats/${params.chat_id}`);
         return {
-            chat: response.data
+            chat: {
+                ...response.data,
+                messages: response.data.messages.map(m => ({
+                    ...m,
+                    history: m.history.map(h => ({
+                        ...h,
+                        date: h.date * 1000
+                    }))
+                }))
+            }
         };
     } catch (error) {
         return {
