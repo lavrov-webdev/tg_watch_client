@@ -65,26 +65,29 @@
 		</div>
 	</button>
 	{#if expanded && message.history.length > 1}
-		<div transition:slide class="message-history">
-			{#each message.history.slice().reverse() as action, i}
-				<div class="history-item {action.type}">
-					<div class="history-header">
-						<Text variant="small" color="secondary" class="history-type">{action.type}</Text>
-						<button
-							class={{ 'diff-button': true, 'to-compare': toCompare.includes(action.id) }}
-							onclick={() => toggleToCompare(action.id)}
-						>
-							Compare
-						</button>
+		<div class="message-history-container">
+			<div class="connector"></div>
+			<div transition:slide class="message-history">
+				{#each message.history.slice().reverse() as action, i}
+					<div class="history-item {action.type}">
+						<div class="history-header">
+							<Text variant="small" color="secondary" class="history-type">{action.type}</Text>
+							<button
+								class={{ 'diff-button': true, 'to-compare': toCompare.includes(action.id) }}
+								onclick={() => toggleToCompare(action.id)}
+							>
+								Compare
+							</button>
+						</div>
+						<Text variant="body">
+							{@html getMessageContent(action.payload)}
+						</Text>
+						<Text variant="small" color="muted" class="history-date">
+							{dayjs(action.date).format(DATE_FORMAT)}
+						</Text>
 					</div>
-					<Text variant="body">
-						{@html getMessageContent(action.payload)}
-					</Text>
-					<Text variant="small" color="muted" class="history-date">
-						{dayjs(action.date).format(DATE_FORMAT)}
-					</Text>
-				</div>
-			{/each}
+				{/each}
+			</div>
 		</div>
 	{/if}
 	<Modal isOpen={toCompare.length === 2} onClose={() => (toCompare = [])}>
@@ -100,6 +103,7 @@
 		font-size: 15px;
 		line-height: 1.4;
 		color: #333;
+		position: relative;
 
 		:global {
 			p {
@@ -114,6 +118,7 @@
 		.message-preview {
 			width: 100%;
 			border: 1px solid #e5e5e5;
+			border-radius: 8px;
 			transition: all 0.2s ease;
 			cursor: pointer;
 			position: relative;
@@ -124,6 +129,7 @@
 			flex-wrap: wrap;
 			background: #ffffff;
 			padding: 10px 14px;
+			z-index: 2;
 
 			&:hover {
 				box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
@@ -156,10 +162,29 @@
 			}
 		}
 
+		.message-history-container {
+			position: relative;
+			margin-left: 20px;
+		}
+
+		.connector {
+			position: absolute;
+			left: -10px;
+			top: -10px;
+			bottom: 10px;
+			width: 2px;
+			background-color: #e5e5e5;
+			z-index: 1;
+		}
+
 		.message-history {
-			margin-top: 12px;
+			margin-top: 8px;
 			padding: 8px 14px;
 			border: 2px solid #e5e5e5;
+			border-radius: 0 8px 8px 8px;
+			position: relative;
+			background-color: #fafafa;
+			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 
 			.history-item {
 				text-align: left;
