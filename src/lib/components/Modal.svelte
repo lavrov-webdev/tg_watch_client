@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import { fade, fly } from 'svelte/transition';
+	import { fly } from 'svelte/transition';
 	type Props = {
 		isOpen: boolean;
 		onClose: () => void;
@@ -8,90 +8,56 @@
 	};
 
 	const { children, isOpen, onClose }: Props = $props();
-	
-	let previouslyFocusedElement: HTMLElement | null = null;
+
+	let dialog = $state<HTMLDialogElement>();
 
 	$effect(() => {
-		if (isOpen) {
-			document.body.style.overflow = 'hidden';
-			previouslyFocusedElement = document.activeElement as HTMLElement;
-		} else {
-			document.body.style.overflow = '';
-			if (previouslyFocusedElement) {
-				setTimeout(() => {
-					previouslyFocusedElement?.focus();
-				}, 0);
-			}
-		}
+		if (isOpen) dialog?.showModal();
 	});
-
-	function onEscPress(node: HTMLElement) {
-		const handleKeydown = (event: KeyboardEvent) => {
-			if (event.key === 'Escape') {
-				onClose();
-			}
-		};
-		
-		window.addEventListener('keydown', handleKeydown);
-		
-		return {
-			destroy() {
-				window.removeEventListener('keydown', handleKeydown);
-			}
-		};
-	}
 </script>
 
 {#if isOpen}
-	<div use:onEscPress class="modal-container" in:fade={{ duration: 200 }} out:fade={{ duration: 150 }}>
-		<div
-			onkeydown={onClose}
-			role="dialog"
-			tabindex="-1"
-			aria-modal="true"
-			onclick={onClose}
-			class="modal-overlay"
-			transition:fade={{ duration: 300 }}
-		></div>
-
-		<div 
-			transition:fly={{ y: 30, duration: 300 }} 
-			class="modal-content"
-			role="dialog"
-			aria-modal="true"
-		>
+	<dialog
+		onclick={(e) => {
+			if (e.target === dialog) dialog.close();
+		}}
+		bind:this={dialog}
+		onclose={onClose}
+		transition:fly={{ y: 30, duration: 300 }}
+	>
+		<div class="modal-content">
 			{@render children()}
 		</div>
-	</div>
+	</dialog>
 {/if}
 
 <style>
-	.modal-container {
-		position: fixed;
-		inset: 0;
-		z-index: 50;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		padding: 1rem;
+	dialog {
+		padding: 0;
+		border: none;
+		&::backdrop {
+			background-color: rgba(0, 0, 0, 0.5);
+		}
 	}
 
-	.modal-overlay {
-		position: fixed;
-		inset: 0;
-		background-color: rgba(0, 0, 0, 0.5);
+	dialog[open]::backdrop {
+		animation: fade 0.2s ease-out;
 	}
 
 	.modal-content {
-		position: relative;
-		z-index: 10;
-		border-radius: 0.5rem;
-		background-color: var(--modal-bg, white);
-		max-height: calc(100% - 20px);
-		overflow-y: auto;
 		padding: 1.5rem;
+		background-color: var(--modal-bg, white);
 		box-shadow:
 			0 20px 25px -5px rgb(0 0 0 / 0.1),
 			0 8px 10px -6px rgb(0 0 0 / 0.1);
+	}
+
+	@keyframes fade {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
 	}
 </style>
