@@ -87,6 +87,8 @@
 		z-index: 10;
 		border-radius: 0.5rem;
 		background-color: var(--modal-bg, white);
+		max-height: calc(100% - 20px);
+		overflow-y: auto;
 		padding: 1.5rem;
 		box-shadow:
 			0 20px 25px -5px rgb(0 0 0 / 0.1),
