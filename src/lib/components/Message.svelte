@@ -7,6 +7,8 @@
 	import DiffView from './DiffView.svelte';
 	import Modal from './Modal.svelte';
 	import Text from './Text.svelte';
+	import dayjs from 'dayjs';
+	import { DATE_FORMAT } from '$lib/consts';
 	type Props = {
 		message: TMessage;
 	};
@@ -56,6 +58,11 @@
 			{/if}
 		</span>
 		<div class="history-count">{message.history.length}</div>
+		<div class="message-date">
+			<Text variant="small" color="muted" class="history-date">
+				{dayjs(lastAction?.date).format(DATE_FORMAT)}
+			</Text>
+		</div>
 	</button>
 	{#if expanded && message.history.length > 1}
 		<div transition:slide class="message-history">
@@ -74,7 +81,7 @@
 						{@html getMessageContent(action.payload)}
 					</Text>
 					<Text variant="small" color="muted" class="history-date">
-						{new Date(action.date).toLocaleString()}
+						{dayjs(action.date).format(DATE_FORMAT)}
 					</Text>
 				</div>
 			{/each}
@@ -108,7 +115,8 @@
 			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 			display: flex;
 			justify-content: space-between;
-			align-items: center;
+			align-items: flex-start;
+			flex-wrap: wrap;
 			background: #ffffff;
 			padding: 10px 14px;
 
@@ -132,6 +140,14 @@
 			.message-text {
 				text-align: left;
 				padding-right: 0.8em;
+				max-width: 95%;
+			}
+
+			.message-date {
+				width: 100%;
+				min-width: 100px;
+				margin-block-start: 1rem;
+				text-align: left;
 			}
 		}
 
