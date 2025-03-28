@@ -1,7 +1,9 @@
 <script lang="ts">
 	import type { Message as TMessage } from '$lib/types';
-	import { slide } from 'svelte/transition';
 	import _ from 'lodash';
+	import { marked } from 'marked';
+	import sanitizeHtml from 'sanitize-html';
+	import { slide } from 'svelte/transition';
 	import DiffView from './DiffView.svelte';
 	import Modal from './Modal.svelte';
 	import Text from './Text.svelte';
@@ -30,6 +32,14 @@
 			? { oldText: first.payload || '', newText: second.payload || '' }
 			: { oldText: second.payload || '', newText: first.payload || '' };
 	});
+
+	const getMessageContent = (payload?: string) => {
+		if (!payload) {
+			return 'No content';
+		}
+		const htmlContent = marked.parse(payload, { async: false });
+		return sanitizeHtml(htmlContent);
+	};
 </script>
 
 <div class="message-content {lastAction?.type === 'deleted' ? 'deleted' : ''}">
@@ -40,7 +50,9 @@
 			{:else if !lastAction?.payload}
 				<Text variant="body" italic={true} color="muted">No content</Text>
 			{:else}
-				<Text variant="body">{lastAction?.payload}</Text>
+				<Text variant="body">
+					{@html getMessageContent(lastAction.payload)}
+				</Text>
 			{/if}
 		</span>
 		<div class="history-count">{message.history.length}</div>
@@ -58,7 +70,9 @@
 							Compare
 						</button>
 					</div>
-					<Text variant="body">{action.payload || 'No content'}</Text>
+					<Text variant="body">
+						{@html getMessageContent(action.payload)}
+					</Text>
 					<Text variant="small" color="muted" class="history-date">
 						{new Date(action.date).toLocaleString()}
 					</Text>
@@ -79,6 +93,11 @@
 		font-size: 15px;
 		line-height: 1.4;
 		color: #333;
+
+		:global(p) {
+			margin: 0;
+			padding: 0;
+		}
 
 		.message-preview {
 			width: 100%;
@@ -109,12 +128,11 @@
 				padding-inline: 0.3em;
 				font-size: 0.7rem;
 			}
-			
+
 			.message-text {
 				text-align: left;
-				padding-right: .8em;
+				padding-right: 0.8em;
 			}
-
 		}
 
 		.message-history {
@@ -146,7 +164,7 @@
 					border-radius: 4px;
 					transition: all 0.2s;
 					cursor: pointer;
-					
+
 					&:hover {
 						background-color: #e0e0e0;
 					}

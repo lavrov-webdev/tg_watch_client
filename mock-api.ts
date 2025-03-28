@@ -42,7 +42,61 @@ const chatDetails = {
           {
             id: "c57b0ae9-d4cd-4c6d-af39-38dceba982c0",
             type: "created",
-            payload: "Some new message text",
+            payload: `# How to Make a Perfect Cup of Coffee
+
+Making a perfect cup of coffee is an art and a science. Here's a step-by-step guide to help you brew a delicious cup of coffee at home.
+
+## Ingredients
+
+- Freshly ground coffee (1-2 tablespoons per cup)
+- Water (filtered is best)
+- Milk or cream (optional)
+- Sugar or sweetener (optional)
+
+## Equipment
+
+- Coffee maker or French press
+- Coffee grinder (if using whole beans)
+- Kettle or pot
+- Mug
+
+## Instructions
+
+1. **Select Your Coffee Beans**
+   - Choose high-quality coffee beans.
+   - Consider the roast type: light, medium, or dark, depending on your preference.
+
+2. **Grind the Coffee Beans**
+   - Use a coffee grinder to grind your coffee beans to the desired coarseness.
+   - For drip coffee makers, use a medium grind.
+   - For a French press, use a coarser grind.
+
+3. **Boil the Water**
+   - Heat water to approximately 200°F (93°C). This is just below boiling point.
+   - If you don't have a thermometer, let boiling water sit for 30 seconds.
+
+4. **Measure the Coffee**
+   - Use 1 to 2 tablespoons of coffee per 6 ounces (180 ml) of water, depending on how strong you like your coffee.
+
+5. **Brew the Coffee**
+   - In a drip coffee maker: Add water to the reservoir, place the filter with ground coffee in the basket, and start the machine.
+   - For a French press: Add coffee grounds to the press, pour in hot water, stir with a spoon, place the lid on top, and let it steep for 4 minutes. Then, slowly press the plunger down.
+
+6. **Customize Your Coffee**
+   - Add milk, cream, sugar, or sweetener if desired.
+
+7. **Enjoy**
+   - Pour the coffee into your favorite mug and enjoy!
+
+## Tips
+
+- For the best flavor, use freshly ground coffee and filtered water.
+- Experiment with different coffee-to-water ratios and brewing times to find your perfect cup.
+- Store beans in an airtight container in a cool, dark place.
+
+Enjoy the process of making coffee and savor every sip! ☕
+
+`,
             date: 978307200000
           },
           {
@@ -176,7 +230,7 @@ const chatDetails = {
           {
             id: "7d8e9f0a-1b2c-3d4e-5f6g-7h8i9j0k1l2m",
             type: "created",
-            payload: "Meeting at 3pm tomorrow",
+            payload: "Meeting at 3pm **tomorrow**",
             date: 1742054400000
           }
         ]
