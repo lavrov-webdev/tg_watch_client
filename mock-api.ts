@@ -45,6 +45,7 @@ const chatDetails = {
             payload: `# How to Make a Perfect Cup of Coffee
 
 Making a perfect cup of coffee is an art and a science. Here's a step-by-step guide to help you brew a delicious cup of coffee at home.
+[google.com](https://google.com)
 
 ## Ingredients
 

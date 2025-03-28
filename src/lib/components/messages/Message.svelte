@@ -4,9 +4,9 @@
 	import { marked } from 'marked';
 	import sanitizeHtml from 'sanitize-html';
 	import { slide } from 'svelte/transition';
-import DiffView from './DiffView.svelte';
-import Modal from '../ui/Modal.svelte';
-import Text from '../ui/Text.svelte';
+	import DiffView from './DiffView.svelte';
+	import Modal from '../ui/Modal.svelte';
+	import Text from '../ui/Text.svelte';
 	import dayjs from 'dayjs';
 	import { DATE_FORMAT } from '$lib/consts';
 	type Props = {
@@ -101,9 +101,14 @@ import Text from '../ui/Text.svelte';
 		line-height: 1.4;
 		color: #333;
 
-		:global(p) {
-			margin: 0;
-			padding: 0;
+		:global {
+			p {
+				margin: 0;
+				padding: 0;
+			}
+			a {
+				color: #0088cc;
+			}
 		}
 
 		.message-preview {
