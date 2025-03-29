@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Chat } from '$lib/types';
 	import Text from '../ui/Text.svelte';
+	import { onMount } from 'svelte';
 
 	type Props = {
 		chats: Chat[];
@@ -8,9 +9,31 @@
 	};
 
 	const { selectedChat, chats }: Props = $props();
+	
+	let isCollapsed = $state(false);
+	
+	function toggleSidebar() {
+		isCollapsed = !isCollapsed;
+	}
+	
+	onMount(() => {
+		const savedState = localStorage.getItem('sidebarCollapsed');
+		if (savedState) {
+			isCollapsed = savedState === 'true';
+		}
+	});
+	
+	$effect(() => {
+		if (typeof localStorage !== 'undefined') {
+			localStorage.setItem('sidebarCollapsed', String(isCollapsed));
+		}
+	});
 </script>
 
-<div class="chat-list">
+<div class="chat-list" class:collapsed={isCollapsed}>
+	<button class="toggle-button" onclick={toggleSidebar} title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}>
+		<span class="toggle-icon">{isCollapsed ? '→' : '←'}</span>
+	</button>
 	{#if chats.length === 0}
 		<div class="no-chats">
 			<div class="no-chats-icon">📭</div>
@@ -29,7 +52,7 @@
 				<div class="avatar">
 					<div class="avatar-placeholder">{chat.name.charAt(0)}</div>
 				</div>
-				<div class="chat-content">
+				<div class="chat-content" class:hidden={isCollapsed}>
 					<div class="chat-header">
 						<Text variant="body" weight="medium" truncate={true} class="chat-name">{chat.name}</Text>
 					</div>
@@ -47,6 +70,38 @@
 		height: 100vh;
 		overflow-y: auto;
 		border-right: 1px solid #f0f0f0;
+		position: relative;
+		transition: max-width 0.3s ease;
+	}
+	
+	.chat-list.collapsed {
+		max-width: 80px;
+	}
+	
+	.toggle-button {
+		position: sticky;
+		top: 10px;
+		float: right;
+		margin-right: 10px;
+		width: 30px;
+		height: 30px;
+		border-radius: 50%;
+		background-color: #f0f0f0;
+		border: none;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		z-index: 10;
+		transition: background-color 0.2s;
+	}
+	
+	.toggle-button:hover {
+		background-color: #e0e0e0;
+	}
+	
+	.toggle-icon {
+		font-size: 14px;
 	}
 
 	.no-chats {
@@ -80,26 +135,31 @@
 		width: 100%;
 		text-align: left;
 	}
+	
+	.chat-list.collapsed a.chat-item {
+		justify-content: center;
+		padding: 10px 5px;
+	}
 
-	/* 1. Нет ховер, чат не выбран - базовый стиль */
-
-	/* 2. Нет ховер, чат выбран */
 	a.chat-item[data-selected='true'] {
 		background-color: #e6f2ff;
 	}
 
-	/* 3. Есть ховер, чат выбран */
 	a.chat-item[data-selected='true']:hover {
 		background-color: #d9e9ff;
 	}
 
-	/* 4. Есть ховер, чат не выбран */
 	a.chat-item:not([data-selected='true']):hover {
 		background-color: #f5f5f5;
 	}
 
 	.avatar {
 		margin-right: 12px;
+		transition: margin 0.3s ease;
+	}
+	
+	.chat-list.collapsed .avatar {
+		margin-right: 0;
 	}
 
 	.avatar-placeholder {
@@ -118,6 +178,13 @@
 	.chat-content {
 		flex: 1;
 		min-width: 0;
+		transition: opacity 0.2s ease;
+	}
+	
+	.chat-content.hidden {
+		opacity: 0;
+		width: 0;
+		overflow: hidden;
 	}
 
 	.chat-header {

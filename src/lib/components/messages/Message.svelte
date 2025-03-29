@@ -13,7 +13,7 @@
 		message: TMessage;
 	};
 	const { message }: Props = $props();
-	const lastAction = message.history.at(-1);
+	const lastAction = $derived(message.history.at(-1));
 	const previousAction = $derived(
 		lastAction?.type === 'deleted' && message.history.length > 1 ? message.history.at(-2) : null
 	);
