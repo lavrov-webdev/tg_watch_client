@@ -15,9 +15,7 @@
 	const { message }: Props = $props();
 	const lastAction = message.history.at(-1);
 	const previousAction = $derived(
-		lastAction?.type === 'deleted' && message.history.length > 1
-			? message.history.at(-2)
-			: null
+		lastAction?.type === 'deleted' && message.history.length > 1 ? message.history.at(-2) : null
 	);
 	let toCompare = $state<string[]>([]);
 	let expanded = $state(false);
@@ -50,14 +48,12 @@
 </script>
 
 <div class="message-content">
-	<button onclick={toggleHistory} class="message-preview {lastAction?.type === 'deleted' ? 'deleted' : ''}">
+	<button onclick={toggleHistory} class="message-preview {lastAction?.type}">
 		<span class="message-text">
 			{#if lastAction?.type === 'deleted' && previousAction}
 				<Text variant="body" color="muted">
 					{@html getMessageContent(previousAction.payload)}
 				</Text>
-			{:else if lastAction?.type === 'deleted'}
-				<Text variant="body" italic={true} color="muted">Message deleted</Text>
 			{:else if !lastAction?.payload}
 				<Text variant="body" italic={true} color="muted">No content</Text>
 			{:else}
@@ -77,13 +73,13 @@
 		<div class="message-history-container">
 			<div class="connector"></div>
 			<div transition:slide class="message-history">
-				{#each message.history.slice().reverse() as action, i}
+				{#each message.history.slice().reverse() as action}
 					<div class="history-item {action.type}">
 						<div class="history-header">
 							<Text variant="small" color="secondary" class="history-type">{action.type}</Text>
 							{#if action.type !== 'deleted'}
 								<button
-									class={{ 'diff-button': true, 'to-compare': toCompare.includes(action.id) }}
+									class={['diff-button', { 'to-compare': toCompare.includes(action.id) }]}
 									onclick={() => toggleToCompare(action.id)}
 								>
 									Compare
@@ -128,31 +124,31 @@
 			}
 		}
 
-			.message-preview {
-				width: 100%;
-				border: 1px solid #e5e5e5;
-				border-radius: 8px;
-				transition: all 0.2s ease;
-				cursor: pointer;
-				position: relative;
-				box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-				display: flex;
-				justify-content: space-between;
-				align-items: flex-start;
-				flex-wrap: wrap;
-				background: #ffffff;
-				padding: 10px 14px;
-				z-index: 2;
+		.message-preview {
+			width: 100%;
+			border: 1px solid #e5e5e5;
+			border-radius: 8px;
+			transition: all 0.2s ease;
+			cursor: pointer;
+			position: relative;
+			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+			display: flex;
+			justify-content: space-between;
+			align-items: flex-start;
+			flex-wrap: wrap;
+			background: #ffffff;
+			padding: 10px 14px;
+			z-index: 2;
 
-				&:hover {
-					box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-				}
+			&:hover {
+				box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+			}
 
-				&.deleted {
-					background: #f8f8f8;
-					border-color: #e0e0e0;
-					color: #999;
-				}
+			&.deleted {
+				background: #f8f8f8;
+				border-color: #e0e0e0;
+				color: #999;
+			}
 
 			.history-count {
 				border: 1px solid rgba(95, 95, 95, 0.254);
