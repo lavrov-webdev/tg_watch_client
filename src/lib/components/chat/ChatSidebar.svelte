@@ -52,7 +52,7 @@
 				<div class="avatar">
 					<div class="avatar-placeholder">{chat.name.charAt(0)}</div>
 				</div>
-				<div class="chat-content" class:hidden={isCollapsed}>
+				<div class="chat-content">
 					<div class="chat-header">
 						<Text variant="body" weight="medium" truncate={true} class="chat-name">{chat.name}</Text>
 					</div>
@@ -135,13 +135,6 @@
 		width: 100%;
 		text-align: left;
 	}
-	
-	.chat-list.collapsed a.chat-item {
-		justify-content: center;
-		padding: 10px 5px;
-		display: flex;
-		align-items: center;
-	}
 
 	a.chat-item[data-selected='true'] {
 		background-color: #e6f2ff;
@@ -158,13 +151,6 @@
 	.avatar {
 		margin-right: 12px;
 		transition: margin 0.3s ease;
-	}
-	
-	.chat-list.collapsed .avatar {
-		margin-right: 0;
-		display: flex;
-		justify-content: center;
-		width: 100%;
 	}
 
 	.avatar-placeholder {
@@ -184,12 +170,6 @@
 		flex: 1;
 		min-width: 0;
 		transition: opacity 0.2s ease;
-	}
-	
-	.chat-content.hidden {
-		opacity: 0;
-		width: 0;
-		overflow: hidden;
 	}
 
 	.chat-header {
