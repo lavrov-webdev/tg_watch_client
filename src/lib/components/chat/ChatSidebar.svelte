@@ -139,6 +139,8 @@
 	.chat-list.collapsed a.chat-item {
 		justify-content: center;
 		padding: 10px 5px;
+		display: flex;
+		align-items: center;
 	}
 
 	a.chat-item[data-selected='true'] {
@@ -160,6 +162,9 @@
 	
 	.chat-list.collapsed .avatar {
 		margin-right: 0;
+		display: flex;
+		justify-content: center;
+		width: 100%;
 	}
 
 	.avatar-placeholder {
